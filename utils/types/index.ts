@@ -1,3 +1,9 @@
+export interface TypeQueryResult {
+    fieldCount: number,
+    affectedRows: number,
+    insertId: number
+}
+
 export interface TypeDocumentType {
   iddocumenttype?: number;
   documenttypename: string;
@@ -10,7 +16,8 @@ export interface TypePerson {
   iddocumenttype: number;
   address?: string;
   phonenumber?:string;
-  birthdate:Date;
+  birthdate?:Date;
+  idparent?: string;
 }
 
 export interface TypeWorkshop {
@@ -44,4 +51,12 @@ export interface TypeInscription {
 	isrequiredthirddoc: string;
 	namethirddoc: string;
     filethirddoc: string;
+}
+
+export interface TypePayments{
+    idpayment?: number,
+    idinscription: number,
+    payment: number,
+    filepaymentlocation?: string,
+    state: string,
 }

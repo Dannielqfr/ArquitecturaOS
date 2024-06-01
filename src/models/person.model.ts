@@ -39,9 +39,20 @@ export async function postPerson(person: TypePerson): Promise<number> {
   });
 }
 
-export async function putPerson(person: TypePerson): Promise<number> {
+export async function putPerson(person: TypePerson, id: string): Promise<number> {
   return new Promise((resolve, reject) => {
-    const query = `UPDATE people SET personname="${person.personname}", personlastname="${person.personlastname}", iddocumenttype=${person.iddocumenttype},address="${person.address}", phonenumber=${person.phonenumber}, birthdate="${person.birthdate}", idparent="${person.idparent}" WHERE documentnumber="${person.documentnumber}";`;
+    const query = `UPDATE people SET personname="${person.personname}", personlastname="${person.personlastname}", iddocumenttype=${person.iddocumenttype},address="${person.address}", phonenumber=${person.phonenumber}, birthdate="${person.birthdate}", idparent="${person.idparent}" WHERE documentnumber="${id}";`;
+    connection.query(query, (err, results) => {
+      const r: TypeQueryResult = results as TypeQueryResult;
+      if (err) reject(err);
+      else resolve(r.affectedRows);
+    });
+  });
+}
+
+export async function deletePerson(documentnumber: string): Promise<number> {
+  return new Promise((resolve, reject) => {
+    const query = `DELETE FROM people WHERE documentnumber="${documentnumber}";`;
     connection.query(query, (err, results) => {
       const r: TypeQueryResult = results as TypeQueryResult;
       if (err) reject(err);

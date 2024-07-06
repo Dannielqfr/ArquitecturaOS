@@ -7,6 +7,7 @@ import DocumentRouter from "./routes/document.routes";
 import WorkshopRouter from "./routes/workshop.routes";
 import PaymentRouter from "./routes/payment.routes";
 import InscriptionRouter from "./routes/inscription.routes"
+import AuthRouter from "./routes/auth.routes"
 
 const corsOptions = {
   origin: 'http://localhost:4200', // URL de tu aplicación Angular
@@ -28,6 +29,7 @@ app.use("/document", DocumentRouter);
 app.use("/workshop", WorkshopRouter);
 app.use("/payment", PaymentRouter);
 app.use("/inscription", InscriptionRouter);
+app.use("/auth", AuthRouter);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

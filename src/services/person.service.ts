@@ -1,11 +1,23 @@
 import { TypePerson } from "../../utils/types";
 import { PersonResult, deletePerson, getAllPeople, postPerson, putPerson } from "../models/person.model";
+import bcrypt from 'bcrypt';
 
 export class PersonService {
   private readonly people: TypePerson[];
 
   constructor() {
     this.people = [];
+  }
+
+  async #encrypt(passToEncrypt: string): Promise<string | null> {
+    try {
+      const salt = await bcrypt.genSalt();
+      const hash = await bcrypt.hash(passToEncrypt, salt);
+      return hash;
+    } catch (error) {
+      console.log("Error AuthService_Encrypt: ", error);
+      return null
+    }
   }
 
   #validate(person: TypePerson): boolean {
@@ -15,7 +27,7 @@ export class PersonService {
     if (typeof person.address === "undefined") return false;
     if (typeof person.phonenumber === "undefined") return false;
     if (typeof person.birthdate === "undefined") return false;
-    if (typeof person.idparent === "undefined") return false;
+    //if (typeof person.idparent === "undefined") return false;
     if (!person.personname || !person.personlastname || !person.iddocumenttype)
       return false;
     return true;
@@ -25,7 +37,14 @@ export class PersonService {
     if (!this.#validate(person))
       return { success: false, message: "Error verificar datos enviados." };
     try {
-      const idperson = await postPerson(person);
+      if (person && person.userpass) {
+        const encoded = await this.#encrypt(person.userpass);
+        if (!encoded) {
+          return { success: false, message: "Error, contactar al administrador." };
+        }
+        person.userpass = encoded
+      }
+      const createdPerson = await postPerson(person);
       return {
         success: true,
         message: "Persona creada correctamente",
@@ -85,6 +104,18 @@ export class PersonService {
     } catch (error) {
       console.error(error);
       return { success: false, message: "Error al actualizar la persona" };
+    }
+  }
+
+  async getByUsername(username: string): Promise<PersonResult> {
+    try {
+      const pp = await getAllPeople()
+      const person = pp.find((person) => person.username === username);
+      if (!person) return { success: false, message: "Usuario no encontrado" };
+      return { success: true, data: person, message: "Usuario encontrado" };
+    } catch (error) {
+      console.error(error);
+      return { success: false, message: "Error al obtener usuario" };
     }
   }
 

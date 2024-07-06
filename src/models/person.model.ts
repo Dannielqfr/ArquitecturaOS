@@ -19,8 +19,8 @@ export async function getAllPeople(): Promise<TypePerson[]> {
 
 export async function postPerson(person: TypePerson): Promise<number> {
   return new Promise((resolve, reject) => {
-    const query = `INSERT INTO people (documentnumber, personname, personlastname,iddocumenttype, address, phonenumber, birthdate, idparent) VALUES ("${person.documentnumber}","${person.personname}","${person.personlastname}",${person.iddocumenttype},"${person.address}","${person.phonenumber}",${person.birthdate},${person.idparent});`;
-    const query2 = `INSERT INTO people (documentnumber, personname, personlastname,iddocumenttype, address, phonenumber, birthdate, idparent) VALUES (?,?,?,?,?,?,?,?);`;
+    // const query = `INSERT INTO people (documentnumber, personname, personlastname,iddocumenttype, address, phonenumber, birthdate, idparent, username, userpass) VALUES ("${person.documentnumber}","${person.personname}","${person.personlastname}",${person.iddocumenttype},"${person.address}","${person.phonenumber}",${person.birthdate},${person.idparent});`;
+    const query2 = `INSERT INTO people (documentnumber, personname, personlastname,iddocumenttype, address, phonenumber, birthdate, idparent,username,userpass) VALUES (?,?,?,?,?,?,?,?,?,?);`;
     const values = [
       person.documentnumber,
       person.personname,
@@ -30,6 +30,8 @@ export async function postPerson(person: TypePerson): Promise<number> {
       person.phonenumber,
       person.birthdate,
       person.idparent,
+      person.username,
+      person.userpass
     ];
     connection.query(query2, values, (err, results) => {
       const r: TypeQueryResult = results as TypeQueryResult;

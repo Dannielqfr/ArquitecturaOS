@@ -13,7 +13,7 @@ router.get('/get/:id', authValidation(2), async (req, res) => {
     const person = await personService.getById(req.params.id);
     res.status(200).json(person);
 })
-router.post('/post', authValidation(2), async (req, res) => {
+router.post('/post', async (req, res) => {
     const person = req.body
     const createdPerson = await personService.create(person);
     res.status(201).json(createdPerson);

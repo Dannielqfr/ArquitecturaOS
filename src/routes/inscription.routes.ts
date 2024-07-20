@@ -12,11 +12,13 @@ router.get("/get", authValidation(2), async (req, res) => {
 });
 
 router.post("/post", async (req, res) => {
+    console.log("inscription/post")
     const result = await inscriptionService.create(req.body);
     res.status(201).json(result);
 });
 
 router.put("/put/:id", authValidation(2), async (req, res) => {
+    console.log("inscription/put")
     const result = await inscriptionService.update(req.body, +req.params.id);
     res.status(202).json(result);
 });

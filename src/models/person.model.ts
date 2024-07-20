@@ -9,7 +9,7 @@ export interface PersonResult {
 
 export async function getAllPeople(): Promise<TypePerson[]> {
   return new Promise((resolve, reject) => {
-    const query = "SELECT * FROM people";
+    const query = 'SELECT p.documentnumber,p.personname,p.personlastname,p.iddocumenttype,p.address,p.phonenumber,p.birthdate,p.idparent,p.username,p.userpass,COALESCE(COUNT(i.idinscription), 0) AS inscription_count FROM people p LEFT JOIN inscriptions i ON p.documentnumber = i.idstudent GROUP BY p.documentnumber, p.personname, p.personlastname, p.iddocumenttype, p.address, p.phonenumber, p.birthdate, p.idparent, p.username, p.userpass;';
     connection.query(query, (err, results) => {
       if (err) reject(err);
       else resolve(results as Array<TypePerson>);

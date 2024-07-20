@@ -9,7 +9,7 @@ export interface WorkshopResult {
 
 export async function readWorkshops(): Promise<TypeWorkshop[]> {
     return new Promise((resolve, reject) => {
-        const query = "SELECT * FROM workshops";
+        const query = "SELECT w.idworkshop,w.workshopname,w.workdescription,w.idinstructor,w.costfirst,w.costsecond,w.costthird,w.workshopschedule,w.startsin,w.endsin,w.capacity,w.state, COALESCE(COUNT(i.idinscription), 0) AS inscription_count, w.capacity - COALESCE(COUNT(i.idinscription), 0) AS available_capacity FROM workshops w LEFT JOIN inscriptions i ON w.idworkshop = i.idworkshop GROUP BY w.idworkshop, w.workshopname, w.workdescription, w.idinstructor, w.costfirst, w.costsecond, w.costthird, w.workshopschedule, w.startsin, w.endsin, w.capacity, w.state;";
         connection.query(query, (err, results) => {
             if (err) reject(err);
             else resolve(results as Array<TypeWorkshop>);

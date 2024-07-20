@@ -20,6 +20,7 @@ export interface TypePerson {
     idparent?: string;
     username: string;
     userpass: string;
+    inscription_count?: number;
 }
 
 export interface TypeWorkshop {
@@ -35,6 +36,8 @@ export interface TypeWorkshop {
     endsin: Date;
     capacity: string;
     state: string;
+    inscription_count?: number;
+    available_capacity?: number;
 }
 
 export interface TypeInscription {

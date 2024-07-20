@@ -95,7 +95,9 @@ export class PersonService {
   }
   async updateById(id: string, person: TypePerson): Promise<PersonResult> {
     try {
-      const index = this.people.findIndex((person) => person.documentnumber === id);
+      const people = await getAllPeople()
+      const index = people.findIndex((person) => person.documentnumber === id);
+      //const index = this.people.findIndex((person) => person.documentnumber === id);
       if (index === -1) return { success: false, message: "Persona no encontrada" };
       this.people[index] = person;
       const affectedRows = await putPerson(person, id)

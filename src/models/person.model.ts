@@ -43,8 +43,20 @@ export async function postPerson(person: TypePerson): Promise<number> {
 
 export async function putPerson(person: TypePerson, id: string): Promise<number> {
   return new Promise((resolve, reject) => {
-    const query = `UPDATE people SET personname="${person.personname}", personlastname="${person.personlastname}", iddocumenttype=${person.iddocumenttype},address="${person.address}", phonenumber=${person.phonenumber}, birthdate="${person.birthdate}", idparent="${person.idparent}" WHERE documentnumber="${id}";`;
-    connection.query(query, (err, results) => {
+    //const query = `UPDATE people SET personname="${person.personname}", personlastname="${person.personlastname}", iddocumenttype=${person.iddocumenttype},address="${person.address}", phonenumber=${person.phonenumber}, birthdate="${person.birthdate}", idparent="${person.idparent}" WHERE documentnumber="${id}";`;
+    const query2 = `UPDATE people SET personname=?, personlastname=?, iddocumenttype=?,address=?, phonenumber=?, birthdate=?, idparent=? WHERE documentnumber=?;`;
+    const values = [
+      person.personname,
+      person.personlastname,
+      person.iddocumenttype,
+      person.address,
+      person.phonenumber,
+      person.birthdate,
+      person.idparent,
+      id
+    ];
+
+    connection.query(query2, values, (err, results) => {
       const r: TypeQueryResult = results as TypeQueryResult;
       if (err) reject(err);
       else resolve(r.affectedRows);
